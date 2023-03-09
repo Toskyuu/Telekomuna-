@@ -22,8 +22,8 @@ int martix_H[8][16] = {
 int chooseProgramMode() {
     int testValue;
 
-    cout << "Autorzy:\tRobert Laski 242456 \tKacper Pietrzak 242495\n";
-    cout << "Przed uruchomieniem programu należy uzupełnić message.txt.\n"
+    cout << "Autorzy: Robert Laski 242456 \tKacper Pietrzak 242495\n";
+    cout << "Przed uruchomieniem programu nalezy uzupelnic message.txt.\n"
          << "Wybierz tryb programu: \n"
          << "1. Kodowanie pliku\n"
          << "2. Odkodowywanie pliku\n"
