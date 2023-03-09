@@ -1,12 +1,8 @@
-//
-// Created by rober on 09.03.2023.
-//
-
 #include "Coder.h"
 
 using namespace std;
 
-void Coder::coding(int matrix_h[8][16], FILE *messageFile, FILE *encodedBinaryFile) {
+void Coder::coding(FILE *messageFile, FILE *encodedBinaryFile) {
     int sign, message[byte], parityArray[byte];
 
     while ((sign = fgetc(messageFile)) != EOF) {
@@ -42,7 +38,7 @@ void Coder::coding(int matrix_h[8][16], FILE *messageFile, FILE *encodedBinaryFi
     }
 }
 
-void Coder::decoding(int matrix_h[8][16], FILE *encodedBinaryFile, FILE *decodedAsciiFile) {
+void Coder::decoding(FILE *encodedBinaryFile, FILE *decodedAsciiFile) {
     int encodedSignArray[byte * 2];
     int errorsArray[byte];
     int sign, counter = 0, signCounter = 1, errorsCounter = 0;
@@ -54,9 +50,6 @@ void Coder::decoding(int matrix_h[8][16], FILE *encodedBinaryFile, FILE *decoded
             encodedSignArray[counter] = sign - 48;
             counter++;
         } else {
-            int firstErrorIndex;
-            int secondErrorIndex;
-
             //zapełnienie tablicy bledow zerami
             fill_n(errorsArray, byte, 0);
 
@@ -74,7 +67,7 @@ void Coder::decoding(int matrix_h[8][16], FILE *encodedBinaryFile, FILE *decoded
             }
 
             //naprawa bledow, jesli sie pojawily
-            if (errorsCounter != 0) {
+            if (errorsCounter == 1) {
                 int numberOfErrors = 1;
                 for (int i = 0; i < (byte * 2 - 1); i++) {
                     for (int j = i + 1; j < (byte * 2); j++) {
@@ -88,11 +81,8 @@ void Coder::decoding(int matrix_h[8][16], FILE *encodedBinaryFile, FILE *decoded
 
                         //jesli 2 bledy to zmiana wartosci na odpowiednim indeksie
                         if (numberOfErrors == 2) {
-                            firstErrorIndex = i;
-                            secondErrorIndex = j;
-
-                            encodedSignArray[firstErrorIndex] = !encodedSignArray[firstErrorIndex];
-                            encodedSignArray[secondErrorIndex] = !encodedSignArray[secondErrorIndex];
+                            encodedSignArray[i] = !encodedSignArray[i];
+                            encodedSignArray[j] = !encodedSignArray[j];
                             i = 15;
                             break;
                         }
